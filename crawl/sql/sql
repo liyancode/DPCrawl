@@ -1,0 +1,72 @@
+CREATE TABLE city (
+	id serial Primary key NOT NULL,
+	city_id int,
+	cn_name varchar,
+	pinyin varchar NOT NULL,
+	other varchar
+);
+
+CREATE TABLE category_level_0 (
+	id serial Primary key NOT NULL,
+	category_id int NOT NULL,
+	cn_name varchar NOT NULL,
+	en_name varchar NOT NULL,
+	other varchar
+);
+insert into category_level_0(category_id,cn_name,en_name) values
+(10,'美食','food'),(25,'电影','movie'),(30,'休闲娱乐','life'),(60,'酒店','hotel'),(35,'景点','view'),(50,'丽人','beauty'),
+(55,'结婚','wedding'),(70,'亲子','baby'),(20,'购物','shopping'),(45,'运动健身','sports'),(75,'教育培训','education'),
+(80,'生活服务','other'),(90,'家装','home'),(65,'爱车','car');
+
+CREATE TABLE category_level_1 (
+  id serial Primary key NOT NULL,
+	category_level_0_id int NOT NULL,
+	category_id VARCHAR NOT NULL,
+	cn_name varchar NOT NULL,
+	other varchar,
+	UNIQUE (category_level_0_id,category_id)
+);
+
+CREATE TABLE city_category_level_1_relation (
+	id serial Primary key NOT NULL,
+	city_id int NOT NULL,
+	category_level_1_id VARCHAR NOT NULL,
+	other varchar,
+	UNIQUE (city_id,category_level_1_id)
+);
+CREATE TABLE city_category_level_1_sub_relation (
+	id serial Primary key NOT NULL,
+	city_category_level_1_relation_id int NOT NULL,
+	category_level_1_sub_id VARCHAR NOT NULL,
+	other varchar,
+	UNIQUE (city_category_level_1_relation_id,category_level_1_sub_id)
+);
+
+CREATE TABLE region (
+	id serial Primary key NOT NULL,
+	city_id int NOT NULL,
+	region_id VARCHAR NOT NULL,
+	type VARCHAR NOT Null,
+	cn_name VARCHAR,
+	other varchar,
+	UNIQUE (city_id,region_id)
+);
+
+CREATE TABLE shop_brief (
+	id serial Primary key NOT NULL,
+	city_id int not null,
+	category_level_1_id varchar not null,
+	region_id VARCHAR,
+	shop_id VARCHAR NOT NULL,
+	cn_name VARCHAR,
+	address VARCHAR,
+	comments_num int,
+	comments_score int,
+	mean_price int,
+	taste_score FLOAT ,
+	environment_score FLOAT ,
+	service_score FLOAT,
+	UNIQUE (city_id,category_level_1_id,shop_id)
+);
+
+
